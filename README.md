@@ -1,5 +1,5 @@
 <p align="center">
-  <b>᛭ DoorsOS ᛭</b><br>
+  <b>᛭ MesaOS ᛭</b><br>
   A NixOS config for performant full-passthrough VFIO
 </p>
 <br><br><br><br><br><br><br><br><br><br>
