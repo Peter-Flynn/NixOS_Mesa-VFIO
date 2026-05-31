@@ -46,7 +46,6 @@ in {
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
-        ovmf.enable = lib.versionOlder config.system.nixos.release "25.11";
         ovmfOverride = (pkgs.OVMF.override {
           secureBoot = true;
           tpmSupport = true;

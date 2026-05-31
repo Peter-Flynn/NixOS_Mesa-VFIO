@@ -13,7 +13,9 @@ in {
   };
 
   config = mkIf (cfg.enable && (lib.versionOlder config.system.nixos.release "25.11")) {
-    virtualisation.libvirtd.qemu.ovmf.packages =
-      optionals (opt != null && cfg.qemu.ovmf.enable) [ opt.fd ];
+    virtualisation.libvirtd.qemu.ovmf = {
+      enable = true;
+      packages = optionals (opt != null && cfg.qemu.ovmf.enable) [ opt.fd ];
+    };
   };
 }
