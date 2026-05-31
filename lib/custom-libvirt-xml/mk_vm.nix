@@ -9,7 +9,7 @@
     qemu ? "${pkgs.qemu_kvm}/bin/qemu-system-x86_64",
     cpu ? {},
     drives ? {},
-    devices ? null,
+    devices ? "USB|Audio|VGA|Wi-Fi",
     machine ? "q35"
   }: let
     # BASIC
