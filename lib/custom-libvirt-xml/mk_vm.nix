@@ -78,9 +78,9 @@ in {
       } else driveDefaults.O;
     };
     drivesCount = lib.count (d: d.enable) (lib.attrValues driveSettings);
-    drivesXml = with lib; with builtins; concatStringsSep "\n" (
+    drivesXml = with lib; with builtins; concatStrings (
       imap0 (index: drive: ''
-    <disk type='file' device='disk'>
+''\n    <disk type='file' device='disk'>
       <driver name='qemu' type='raw' cache='none' io='native' discard='unmap' detect_zeroes='unmap'/>
       <source file='${drive.location}'/>${if drive.largeBlk then "
       <blockio logical_block_size='4096' physical_block_size='16384' discard_granularity='16384'/>" else ""}
@@ -141,14 +141,14 @@ in {
     vmPci = lib.custom.detectPci { inherit devices; };
     vmCpu = lib.custom.detectCpu { inherit cpu; };
     mkCdromXml = index: isoPath: ''
-    <disk type='file' device='cdrom'>
+''\n    <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw' io='native' cache='directsync'/>
       <source file='${isoPath}'/>
       <target dev='sd${builtins.substring (index + drivesCount) 1 "abcdefghijklmnopqrstuvwxyz"}' bus='sata'/>
       <readonly/>
     </disk>'';
     cdromXml = if ! (cdIso == null || cdIso == []) then
-      builtins.concatStringsSep "\n" (lib.lists.imap0 mkCdromXml cdIso)
+      builtins.concatStrings (lib.lists.imap0 mkCdromXml cdIso)
     else "";
   in {
     coreInfo = {
@@ -180,8 +180,7 @@ in {
     <nosharepages/>
     <locked/>
   </memoryBacking>
-  <iothreads>1</iothreads>
-${vmCpu.cpuXml}
+  <iothreads>1</iothreads>${vmCpu.cpuXml}
   <os>
     <type arch='x86_64' machine='${machineVersion}'>hvm</type>
     <loader readonly='yes' type='pflash' format='raw'>${cfgFd}/OVMF_CODE.fd</loader>
@@ -277,8 +276,7 @@ ${vmCpu.cpuXml}
     <channel type='unix'>
       <target type='virtio' name='org.qemu.guest_agent.0'/>
     </channel>
-${vmPci.xml}
-  </devices>
+${vmPci.xml}  </devices>
   <qemu:commandline>
     <qemu:arg value="-overcommit"/>
     <qemu:arg value="cpu-pm=on"/>

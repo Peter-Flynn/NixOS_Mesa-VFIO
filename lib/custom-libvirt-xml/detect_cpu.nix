@@ -66,8 +66,8 @@ in {
     emulatorPin = siblingsList emulatorCore;
     tpcR        = threadsPerCore * reserve;
 
-    vcpusXml = concatStringsSep "\n" (genList (i:
-      ''    <vcpu id="${toString i}" enabled="${if i >= tpcR && i < 2 * tpcR then "no" else "yes"}" hotpluggable="${if i < tpcR then "no" else "yes"}"/>''
+    vcpusXml = concatStrings (genList (i: ''
+''\n    <vcpu id="${toString i}" enabled="${if i >= tpcR && i < 2 * tpcR then "no" else "yes"}" hotpluggable="${if i < tpcR then "no" else "yes"}"/>''
     ) totalVcpus);
 
     vcpupinXml = concatStrings (genList (k:
@@ -117,9 +117,8 @@ in {
 
     # ── Public XML ────────────────────────────────────────────────────────
     cpuXml = ''
-  <vcpu placement='static' current='${toString enabledVcpus}'>${toString totalVcpus}</vcpu>
-  <vcpus>
-${vcpusXml}
+''\n  <vcpu placement='static' current='${toString enabledVcpus}'>${toString totalVcpus}</vcpu>
+  <vcpus>${vcpusXml}
   </vcpus>
   <cputune>${vcpupinXml}
     <emulatorpin cpuset='${emulatorPin}'/>
