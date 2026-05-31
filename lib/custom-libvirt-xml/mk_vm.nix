@@ -1,6 +1,8 @@
 { pkgs, lib, ... }:
 
-{
+let
+  nullOrMiss = set: attr: (set.${attr} or null) != null;
+in {
   mkVm = { 
     vmName ? "",
     vmTitle ? "",
@@ -54,25 +56,25 @@
       };
     };
     driveSettings = {
-      C = if drives ? C then {
-        enable = if drives.C ? enable then drives.C.enable else driveDefaults.C.enable;
-        location = if drives.C ? location then drives.C.location else driveDefaults.C.location;
-        largeBlk = if drives.C ? largeBlk then drives.C.largeBlk else driveDefaults.C.largeBlk;
+      C = if (nullOrMiss drives "C") then {
+        enable = if (nullOrMiss drives.C "enable") then drives.C.enable else driveDefaults.C.enable;
+        location = if (nullOrMiss drives.C "location") then drives.C.location else driveDefaults.C.location;
+        largeBlk = if (nullOrMiss drives.C "largeBlk") then drives.C.largeBlk else driveDefaults.C.largeBlk;
       } else driveDefaults.C;
-      D = if drives ? D then {
-        enable = if drives.D ? enable then drives.D.enable else driveDefaults.D.enable;
-        location = if drives.D ? location then drives.D.location else driveDefaults.D.location;
-        largeBlk = if drives.D ? largeBlk then drives.D.largeBlk else driveDefaults.D.largeBlk;
+      D = if (nullOrMiss drives "D") then {
+        enable = if (nullOrMiss drives.D "enable") then drives.D.enable else driveDefaults.D.enable;
+        location = if (nullOrMiss drives.D "location") then drives.D.location else driveDefaults.D.location;
+        largeBlk = if (nullOrMiss drives.D "largeBlk") then drives.D.largeBlk else driveDefaults.D.largeBlk;
       } else driveDefaults.D;
-      S = if drives ? S then {
-        enable = if drives.S ? enable then drives.S.enable else driveDefaults.S.enable;
-        location = if drives.S ? location then drives.S.location else driveDefaults.S.location;
-        largeBlk = if drives.S ? largeBlk then drives.S.largeBlk else driveDefaults.S.largeBlk;
+      S = if (nullOrMiss drives "S") then {
+        enable = if (nullOrMiss drives.S "enable") then drives.S.enable else driveDefaults.S.enable;
+        location = if (nullOrMiss drives.S "location") then drives.S.location else driveDefaults.S.location;
+        largeBlk = if (nullOrMiss drives.S "largeBlk") then drives.S.largeBlk else driveDefaults.S.largeBlk;
       } else driveDefaults.S;
-      O = if drives ? O then {
-        enable = if drives.O ? enable then drives.O.enable else driveDefaults.O.enable;
-        location = if drives.O ? location then drives.O.location else driveDefaults.O.location;
-        largeBlk = if drives.O ? largeBlk then drives.O.largeBlk else driveDefaults.O.largeBlk;
+      O = if (nullOrMiss drives "O") then {
+        enable = if (nullOrMiss drives.O "enable") then drives.O.enable else driveDefaults.O.enable;
+        location = if (nullOrMiss drives.O "location") then drives.O.location else driveDefaults.O.location;
+        largeBlk = if (nullOrMiss drives.O "largeBlk") then drives.O.largeBlk else driveDefaults.O.largeBlk;
       } else driveDefaults.O;
     };
     drivesCount = lib.count (d: d.enable) (lib.attrValues driveSettings);
