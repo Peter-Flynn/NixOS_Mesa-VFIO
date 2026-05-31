@@ -26,10 +26,14 @@
             groups.${userName} = {};
           };
 
-          custom.vm = {
-            enable = true;
-            title = "MesaOS-PC-Example";
-            cdIso = [ "/example/win11.iso" "/example/virtio-win.iso" ];
+          custom = {
+            # Find kernel versions at: https://github.com/xddxdd/nix-cachyos-kernel
+            cachyosKernelVersion = "linux-cachyos-bore-lto-x86_64-v3";
+            vm = {
+              enable = true;
+              title = "MesaOS-PC-Example";
+              cdIso = [ "/example/win11.iso" "/example/virtio-win.iso" ];
+            };
           };
         }
       ];
