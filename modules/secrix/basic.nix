@@ -11,7 +11,9 @@ in {
     default = false;
   };
   config = mkIf cfg {
-    secrix.hostPubKey = readFile ./crypt/mesa.pubkey;
-    hostIdentityFile = "/etc/nixos/private.key";
+    secrix = {
+      hostPubKey = readFile ./crypt/mesa.pubkey;
+      hostIdentityFile = "/etc/nixos/private.key";
+    };
   };
 }
