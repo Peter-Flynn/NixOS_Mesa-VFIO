@@ -32,7 +32,7 @@ in {
     drives = mkOption {
       type = attrsOf (submodule {
         options = {
-          enabled = mkOption {
+          enable = mkOption {
             type = nullOr bool;
             default = null;
           };
