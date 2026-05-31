@@ -1,4 +1,4 @@
-{ ... } @ args:
+{ lib, ... } @ args:
 
 let
   collectNix = dir:
@@ -13,4 +13,6 @@ let
         else [ ]
     ) (builtins.attrNames (builtins.readDir dir));
 in
-builtins.foldl' (acc: f: acc // (import f args)) { } (collectNix ./lib)
+lib.fix (self:
+  builtins.foldl' (acc: f: acc // (import f (args // { lib = lib // { custom = self; }; }))) { } (collectNix ./lib)
+)
