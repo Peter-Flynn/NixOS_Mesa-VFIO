@@ -1,21 +1,16 @@
 { ... } @ args:
 
 let
-  # Function to import all .nix files from a directory recursively
-  importAll = dir:
-    builtins.foldl' (acc: file: acc // (import file args)) { }
-    (builtins.concatMap (name:
+  collectNix = dir:
+    builtins.concatMap (name:
       let
-        entries = builtins.readDir dir;
-        entryType = entries.${name};
-        fullPath = "${builtins.toString dir}/${name}";
+        fullPath = "${dir}/${name}";
       in
-        if entryType == "directory" then
-          importAll fullPath
-        else if builtins.match ".*\\.nix$" name != null then
-          [ fullPath ]
-        else
-          []
-    ) (builtins.attrNames (builtins.readDir dir)));
+        if (builtins.readDir dir).${name} == "directory"
+        then collectNix fullPath
+        else if builtins.match ".*\\.nix$" name != null
+        then [ fullPath ]
+        else [ ]
+    ) (builtins.attrNames (builtins.readDir dir));
 in
-importAll ./lib
+builtins.foldl' (acc: f: acc // (import f args)) { } (collectNix ./lib)
