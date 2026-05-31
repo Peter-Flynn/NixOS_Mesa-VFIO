@@ -77,7 +77,7 @@ in {
       # Roughly 1/6 of host-reserved RAM in bytes, in 512MB chunks.
       zfsDirty = builtins.toString (vm.ramGb.host * 2 / 6 * 536870912);
     in [
-      "hugepages=${vm.ramGb.vm}" "nohz_full=${vm.vmCores.list}" "rcu_nocbs=${vm.vmCores.list}"
+      "hugepages=${vm.ramGb.vm}" "nohz_full=${vm.coreInfo.vmCores.list}" "rcu_nocbs=${vm.coreInfo.vmCores.list}"
       "zfs.zfs_arc_max=${zfsArcMax}" "zfs_dirty_data_max=${zfsDirty}"
     ];
 
@@ -89,7 +89,7 @@ in {
     ];
 
     systemd.settings.Manager.CPUAffinity = vm.coreInfo.hostCoresList;
-    systemd.slices.nix-idle.sliceConfig.AllowedCPUs = vm.vmCores.list;
-    services.vfio-irq-balance.affinityMask = vm.vmCores.mask;
+    systemd.slices.nix-idle.sliceConfig.AllowedCPUs = vm.coreInfo.vmCores.list;
+    services.vfio-irq-balance.affinityMask = vm.coreInfo.vmCores.mask;
   });
 }
