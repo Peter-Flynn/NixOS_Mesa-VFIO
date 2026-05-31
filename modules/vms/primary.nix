@@ -24,7 +24,7 @@ in {
       default = [];
     };
     cpu = mkOption {
-      type = nullOr submodule { options = {
+      type = nullOr (submodule { options = {
         hostReserve = mkOption {
           type = nullOr int;
           default = null;
@@ -33,7 +33,7 @@ in {
           type = nullOr int;
           default = null;
         };
-      }; };
+      }; });
       default = null;
     };
     drives = mkOption {
