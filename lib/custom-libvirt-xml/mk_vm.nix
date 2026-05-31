@@ -5,12 +5,12 @@
     vmName ? "",
     vmTitle ? "",
     config ? {},
-    cdIso ? null,
-    qemu ? "${pkgs.qemu_kvm}/bin/qemu-system-x86_64",
-    cpu ? {},
-    drives ? {},
-    devices ? "USB|Audio|VGA|Wi-Fi",
-    machine ? "q35"
+    cdIso,
+    qemu,
+    cpu,
+    drives,
+    devices,
+    machine
   }: let
     # BASIC
     machineVersion =

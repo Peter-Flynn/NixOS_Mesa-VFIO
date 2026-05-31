@@ -51,11 +51,8 @@ in {
     threadsPerCore = cpuInfo.threads;
     cores          = sockets * dies * clusters * ccxSize;  # total physical cores
 
-    hostReserve   = cpu.hostReserve   or 2;
-    hugeThreshold = cpu.hugeThreshold or 32;
-
     # ── Reserve / pin math (UNCHANGED) ────────────────────────────────────
-    reserve      = if cores > hugeThreshold then ccxSize else hostReserve;
+    reserve      = if cores > cpu.hugeThreshold then ccxSize else cpu.hostReserve;
     totalVcpus   = cores * threadsPerCore;
     enabledVcpus = totalVcpus - threadsPerCore * reserve;
     emulatorCore = reserve - 1;

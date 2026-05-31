@@ -12,11 +12,10 @@ in {
       default = false;
     };
     title = mkOption {
-      type = nullOr str;
-      default = null;
+      type = str;
     };
     qemuPackage = mkOption {
-      type = nullOr package;
+      type = package;
       default = config.virtualisation.libvirtd.qemu.package;
     };
     cdIso = mkOption {
@@ -24,20 +23,14 @@ in {
       default = [];
     };
     cpu = mkOption {
-      type = nullOr (submodule { options = {
-        hostReserve = mkOption {
-          type = nullOr int;
-          default = null;
-        };
-        hugeThreshold = mkOption {
-          type = nullOr int;
-          default = null;
-        };
-      }; });
-      default = null;
+      type = submodule { options = {
+        hostReserve   = mkOption { type = int; default = 2;  };
+        hugeThreshold = mkOption { type = int; default = 32; };
+      }; };
+      default = {};
     };
     drives = mkOption {
-      type = nullOr (attrsOf (submodule {
+      type = attrsOf (submodule {
         options = {
           enabled = mkOption {
             type = nullOr bool;
@@ -52,15 +45,16 @@ in {
             default = null;
           };
         };
-      }));
+      });
+      default = {};
     };
     devices = mkOption {
-      type = nullOr str;
-      default = null;
+      type = str;
+      default = "USB|Audio|VGA|Wi-Fi";
     };
     machine = mkOption {
-      type = nullOr str;
-      default = null;
+      type = str;
+      default = "q35";
     };
   };
   config = mkIf cfg.enable (let
