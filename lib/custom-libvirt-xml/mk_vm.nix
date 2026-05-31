@@ -33,49 +33,49 @@
     # DRIVES
     driveDefaults = {
       C = { # System drive, auto-snapshotted.
-        enabled = true;
+        enable = true;
         location = "/vm_images/${vmName}/drive_c.img";
         largeBlk = true;
       };
       D = { # Large drive, usually not auto-snapshotted.
-        enabled = true;
+        enable = true;
         location = "/vm_images/common/drive_d.img";
         largeBlk = true;
       };
       S = { # SSD-only drive, usually not auto-snapshotted.
-        enabled = false;
+        enable = false;
         location = "/vm_images/speed/drive_s.img";
         largeBlk = true;
       };
       O = { # Old drive, read-only.
-        enabled = false;
+        enable = false;
         location = "/vm_images/old/${vmName}/drive_c.img";
         largeBlk = false;
       };
     };
     driveSettings = {
       C = if drives ? C then {
-        enabled = if drives.C ? enabled then drives.C.enabled else driveDefaults.C.enabled;
+        enable = if drives.C ? enable then drives.C.enable else driveDefaults.C.enable;
         location = if drives.C ? location then drives.C.location else driveDefaults.C.location;
         largeBlk = if drives.C ? largeBlk then drives.C.largeBlk else driveDefaults.C.largeBlk;
       } else driveDefaults.C;
       D = if drives ? D then {
-        enabled = if drives.D ? enabled then drives.D.enabled else driveDefaults.D.enabled;
+        enable = if drives.D ? enable then drives.D.enable else driveDefaults.D.enable;
         location = if drives.D ? location then drives.D.location else driveDefaults.D.location;
         largeBlk = if drives.D ? largeBlk then drives.D.largeBlk else driveDefaults.D.largeBlk;
       } else driveDefaults.D;
       S = if drives ? S then {
-        enabled = if drives.S ? enabled then drives.S.enabled else driveDefaults.S.enabled;
+        enable = if drives.S ? enable then drives.S.enable else driveDefaults.S.enable;
         location = if drives.S ? location then drives.S.location else driveDefaults.S.location;
         largeBlk = if drives.S ? largeBlk then drives.S.largeBlk else driveDefaults.S.largeBlk;
       } else driveDefaults.S;
       O = if drives ? O then {
-        enabled = if drives.O ? enabled then drives.O.enabled else driveDefaults.O.enabled;
+        enable = if drives.O ? enable then drives.O.enable else driveDefaults.O.enable;
         location = if drives.O ? location then drives.O.location else driveDefaults.O.location;
         largeBlk = if drives.O ? largeBlk then drives.O.largeBlk else driveDefaults.O.largeBlk;
       } else driveDefaults.O;
     };
-    drivesCount = lib.count (d: d.enabled) (lib.attrValues driveSettings);
+    drivesCount = lib.count (d: d.enable) (lib.attrValues driveSettings);
     drivesXml = with lib; with builtins; concatStringsSep "\n" (
       imap0 (index: drive: ''
     <disk type='file' device='disk'>
@@ -85,7 +85,7 @@
       <target dev='sd${substring index 1 "abcdefghijklmnopqrstuvwxyz"}' bus='scsi' removable='off'/>
       <address type='drive' controller='0' bus='0' target='0' unit='${toString index}'/>
     </disk>''
-      ) (attrValues (filterAttrs (_: drive: drive.enabled) driveSettings))
+      ) (attrValues (filterAttrs (_: drive: drive.enable) driveSettings))
     );
     # COMPUTE VALUES
     vmRamGb = builtins.readFile(
