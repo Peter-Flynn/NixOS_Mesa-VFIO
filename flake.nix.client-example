@@ -1,0 +1,38 @@
+{
+  inputs.mesa.url = "github:Peter-Flynn/NixOS_Mesa-VFIO";
+
+  outputs = { mesa, ... }: let
+    hostName = "MesaOS-VFIO-Example";
+    userName = "myuser";
+  in {
+    nixosConfigurations.${hostName} = mesa.lib.mkSystem {
+      modules = [
+        ./hardware-configuration.nix
+        {
+          networking = {
+            inherit hostName;
+            hostId = "deadbeef";
+          };
+          system.stateVersion = "25.11";
+
+          users = {
+            users.${userName}= {
+              isNormalUser = true;
+              createHome = true;
+              extraGroups = [ userName "wheel" ];
+              openssh.authorizedKeys = [];
+              hashedPassword = "< Run `mkpasswd` on Linux. >";
+            };
+            groups.${userName} = {};
+          };
+
+          custom.vm = {
+            enable = true;
+            title = "MesaOS-PC-Example";
+            cdIso = [ "/example/win11.iso" "/example/virtio-win.iso" ];
+          };
+        }
+      ];
+    };
+  };
+}
