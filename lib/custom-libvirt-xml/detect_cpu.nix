@@ -93,6 +93,13 @@ in {
     reservedNoEmulatorList =
       if reserve <= 1 then coreRange 0 0 else coreRange 0 (reserve - 2);
 
+    hostReserveCount = let
+        reservedMinusEmulator = if reserve <= 1 then 1 else reserve - 1;
+      in {
+      cores = reservedMinusEmulator;
+      threads = reservedMinusEmulator * threadsPerCore;
+    };
+
     # Every core the VM touches, including the emulator core.
     vmCoresList = coreRange (reserve - 1) (cores - 1);
 
@@ -135,7 +142,7 @@ in {
   {
     inherit sockets dies clusters ccxSize threadsPerCore cores
             reserve totalVcpus enabledVcpus emulatorPin
-            cpuXml topologyXml
+            cpuXml topologyXml hostReserveCount
             reservedNoEmulatorList vmCoresList vmAffinityMask;
   };
 }

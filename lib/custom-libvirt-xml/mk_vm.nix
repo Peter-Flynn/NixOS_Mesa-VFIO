@@ -152,7 +152,10 @@ in {
     else "";
   in {
     coreInfo = {
-      hostCoresList = vmCpu.reservedNoEmulatorList;
+      hostCores = {
+        list = vmCpu.reservedNoEmulatorList;
+        count = vmCpu.hostReserveCount;
+      };
       vmCores = {
         list = vmCpu.vmCoresList;
         mask = vmCpu.vmAffinityMask;
