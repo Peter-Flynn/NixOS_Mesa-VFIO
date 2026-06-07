@@ -4,6 +4,8 @@ let
   cfgFd = "${config.virtualisation.libvirtd.qemu.ovmfOverride.fd}/FV";
 in {
   boot = {
+    kernel.sysctl."kernel.sched_rt_runtime_us" = -1;
+
     kernelParams = [
       "panic=1" "clocksource=tsc" "tsc=reliable" "vfio_pci.disable_idle_d3=1"
       "video=efifb:off" "nomodeset" "modprobe.blacklist=amdgpu" "disable_vga=1"
