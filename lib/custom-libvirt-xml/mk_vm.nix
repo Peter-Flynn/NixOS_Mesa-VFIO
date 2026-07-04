@@ -148,7 +148,7 @@ in {
       <readonly/>
     </disk>'';
     cdromXml = if ! (cdIso == null || cdIso == []) then
-      builtins.concatStrings (lib.lists.imap0 mkCdromXml cdIso)
+      lib.concatStrings (lib.lists.imap0 mkCdromXml cdIso)
     else "";
   in {
     coreInfo = {
