@@ -28,10 +28,10 @@ in {
     services.libvirt-guests = deps;
     targets.virt-guest-shutdown = deps;
     enableEmergencyMode = false;
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-    '';
+    sleep.settings.Sleep = {
+      AllowSuspend = "no";
+      AllowHibernation = "no";
+    };
   };
 
   virtualisation = {
