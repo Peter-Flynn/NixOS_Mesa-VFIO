@@ -81,7 +81,7 @@ in {
     drivesXml = with lib; with builtins; concatStrings (
       imap0 (index: drive: ''
 ''\n    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native' discard='unmap' detect_zeroes='unmap'/>
+      <driver name='qemu' type='raw' cache='none' io='io_uring' discard='unmap'/>
       <source file='${drive.location}'/>${if drive.largeBlk then "
       <blockio logical_block_size='4096' physical_block_size='16384' discard_granularity='16384'/>" else ""}
       <target dev='sd${substring index 1 "abcdefghijklmnopqrstuvwxyz"}' bus='scsi' removable='off'/>

@@ -132,7 +132,6 @@ in {
     <vcpusched vcpus='0-${toString (totalVcpus - 1)}' scheduler='rr' priority='1'/>
     <iothreadpin iothread='1' cpuset='${emulatorPin}'/>
     <emulatorsched scheduler='rr' priority='1'/>
-    <iothreadsched iothreads='1' scheduler='fifo' priority='98'/>
   </cputune>'';
     topologyXml = "<topology sockets='${toString sockets}' dies='${toString dies}' clusters='${toString clusters}' cores='${toString ccxSize}' threads='${toString threadsPerCore}'/>";
   in

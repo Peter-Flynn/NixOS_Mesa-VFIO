@@ -74,7 +74,7 @@ in {
       "hugepages=${vm.ramGb.vm}" "nohz_full=${vm.coreInfo.vmCores.list}"
       "rcu_nocbs=${vm.coreInfo.vmCores.list}" "irqaffinity=${vm.coreInfo.hostCores.list}"
       "isolcpus=managed_irq,domain,${vm.coreInfo.vmCores.list}"
-      "zfs.zfs_arc_max=${zfsArcMax}" "zfs_dirty_data_max=${zfsDirty}"
+      "zfs.zfs_arc_max=${zfsArcMax}" "zfs.zfs_dirty_data_max=${zfsDirty}"
     ];
 
     # Roughly 1/6 of host-reserved RAM in bytes, in 512MB chunks.
